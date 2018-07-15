@@ -1,4 +1,5 @@
 import gameoflife
+from curses import wrapper
 
 if __name__ == "__main__":
-    gameoflife.run()
+    wrapper(gameoflife.run)

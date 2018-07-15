@@ -1,11 +1,12 @@
-import math, random
+import math, random, copy
 
 class Board():
 
     ALIVE = "X"
     DEAD = " "
 
-    def __init__(self, height=10, width=10):
+    def __init__(self, stdscr, height=10, width=10):
+        self.stdscr = stdscr
         self.height = height
         self.width = width
         self.board = [[self.DEAD for x in range(width)] for x in range(height)]
@@ -24,14 +25,18 @@ class Board():
 
 
     def print(self):
+        self.stdscr.clear()
+
         for _ in range(50):
-            print("-", end="")
-        print()
+            self.stdscr.addstr("-")
+        self.stdscr.addstr("\n")
         for row in self.board:
-            print(row)
+            self.stdscr.addstr(f"{row}\n")
         for _ in range(50):
-            print("-", end="")
-        print()
+            self.stdscr.addstr("-")
+        self.stdscr.addstr("\n")
+        self.stdscr.refresh()
+
 
 
     def get_surrounding_live_cell_count(self, row, column):
@@ -60,3 +65,9 @@ class Board():
 
     def awaken_cell(self, row, column):
         self.board[row][column] = self.ALIVE
+
+
+    def copy(self):
+        new_board = Board(self.stdscr, self.height, self.width)
+        new_board.board = copy.deepcopy(self.board)
+        return new_board 
