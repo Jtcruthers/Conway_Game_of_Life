@@ -1,22 +1,23 @@
 from gameoflife.Board import Board
-import copy
+import time
 
 NUM_OF_SIMS = 10
 
-def run():
-    board = create_board(10, 10)
+def run(stdscr):
+    board = create_board(stdscr, 10, 10)
     print_board(board)
-    for _ in range(NUM_OF_SIMS):
+    for _ in range(1, NUM_OF_SIMS):
         board = run_simulation(board)
+        time.sleep(.5)
         print_board(board)
 
 
-def create_board(height, width):
+def create_board(stdscr, height, width):
     """
         Creates the board and seeds it
     """
 
-    board = Board(height, width)
+    board = Board(stdscr, height, width)
     board.seed()
     return board
 
@@ -26,7 +27,7 @@ def run_simulation(board):
         Runs the entire simulation on a given board
     """
 
-    new_board = copy.deepcopy(board)
+    new_board = board.copy() 
     for row in range(board.height):
         for column in range(board.width):
             number_of_neighbors_alive = board.get_surrounding_live_cell_count(row, column)
